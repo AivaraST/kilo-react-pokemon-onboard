@@ -3,11 +3,11 @@ module.exports = {
     browser: true,
     es2021: true,
   },
-  extends: [
-    'airbnb',
-    'airbnb/hooks',
-    'plugin:react/recommended',
-    'plugin:prettier/recommended',
+  extends: ['airbnb', 'airbnb/hooks', 'plugin:react/recommended', 'prettier'],
+  overrides: [
+    {
+      files: ['*.js', '*.jsx'],
+    },
   ],
   parserOptions: {
     ecmaFeatures: {
@@ -18,7 +18,8 @@ module.exports = {
   },
   plugins: ['react', 'prettier'],
   rules: {
-    'react/react-in-jsx-scope': 0,
-    'import/no-extraneous-dependencies': 0,
+    'prettier/prettier': 'warn',
+    'react/react-in-jsx-scope': 'off',
+    'import/no-extraneous-dependencies': 'off',
   },
 };
