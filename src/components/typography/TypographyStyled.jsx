@@ -5,6 +5,7 @@ const TypographyStyled = styled.div`
   font-weight: ${(props) => props.fontWeight};
   color: ${(props) => props.color};
   text-align: ${(props) => props.align};
+  text-transform: ${(props) => props.capitalize && 'capitalize'};
   margin: ${(props) => props.centered && `0 auto`};
   margin-top: ${(props) => props.mt && `${props.mt}px`};
   margin-bottom: ${(props) => props.mb && `${props.mb}px`};
