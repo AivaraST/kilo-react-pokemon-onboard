@@ -3,9 +3,10 @@ import Spinner from '../components/Spinner';
 
 function withLoader(Component) {
   return function withLoaderHoc(props) {
-    if (props.isLoading) {
+    if (props.loading) {
       return <Spinner />;
     }
+
     return <Component {...props} />;
   };
 }
