@@ -16,6 +16,9 @@ function Navigation() {
         <li>
           <Link to="/refs">Refs</Link>
         </li>
+        <li>
+          <Link to="/pokemons">Pokemons</Link>
+        </li>
       </ul>
     </nav>
   );
