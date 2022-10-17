@@ -11,3 +11,7 @@ https://medium.com/@probablyup/introducing-transient-props-f35fd5203e0c
 ## StyledSystem to extend components with margins, paddings, etc...
 
 https://styled-system.com/
+
+## Etc...
+
+https://github.com/PokeAPI/sprites
