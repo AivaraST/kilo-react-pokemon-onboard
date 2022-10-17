@@ -21,5 +21,7 @@ module.exports = {
     'prettier/prettier': 'warn',
     'react/react-in-jsx-scope': 'off',
     'import/no-extraneous-dependencies': 'off',
+    'react/jsx-props-no-spreading': 'off',
+    'react/prop-types': 'off',
   },
 };
