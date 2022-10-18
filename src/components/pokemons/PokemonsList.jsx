@@ -1,9 +1,12 @@
+import { memo } from 'react';
 import Grid from '../layout/Grid';
 import Typography from '../typography/Typography';
 import PokemonCard from './PokemonCard';
 
 function PokemonsList({ pokemons, listName, updateFavoritePokemon }) {
-  if (pokemons.length < 1) return null;
+  // if (pokemons.length < 1) return null;
+
+  console.log('PokemonsList component', listName, 'rendered');
 
   return (
     <>
@@ -24,4 +27,10 @@ function PokemonsList({ pokemons, listName, updateFavoritePokemon }) {
     </>
   );
 }
-export default PokemonsList;
+
+const PokemonsListMemoized = memo(
+  PokemonsList,
+  (prevProps, nextProps) => prevProps.pokemons === nextProps.pokemons
+);
+
+export default PokemonsListMemoized;

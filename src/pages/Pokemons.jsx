@@ -14,6 +14,7 @@ function filterPokemonsFavorite(pokemons) {
 }
 
 function Pokemons() {
+  console.log('Pokemons component rendered');
   const [amount, setAmount] = useState('');
   const [error, setError] = useState('');
   const [pokemons, setPokemons] = useState([]);
@@ -33,9 +34,7 @@ function Pokemons() {
     setPokemons((pokemonsOld) =>
       pokemonsOld.map((pokemon) => {
         if (pokemon.name === name) {
-          const { favorite } = pokemon;
-
-          return { ...pokemon, favorite: !favorite };
+          return { ...pokemon, favorite: !pokemon.favorite };
         }
         return pokemon;
       })
