@@ -13,6 +13,8 @@ function filterPokemonsFavorite(pokemons) {
   return pokemons.filter((pokemon) => pokemon.favorite === true);
 }
 
+const PokemonListWithLoader = withLoader(PokemonsList);
+
 function Pokemons() {
   console.log('Pokemons component rendered');
   const [amount, setAmount] = useState('');
@@ -23,7 +25,6 @@ function Pokemons() {
     [pokemons]
   );
   const [loading, setLoading] = useState(false);
-  const PokemonListWithLoader = withLoader(PokemonsList);
 
   function handleOnChange(e) {
     setAmount(e.currentTarget.valueAsNumber);

@@ -4,9 +4,15 @@ import Typography from '../typography/Typography';
 
 function PokemonCard({ number, name, favorite, updateFavoritePokemon }) {
   const numberFormatted = String(`000${number}`).slice(-3);
+  const delay = Math.floor(Math.random() * (3000 - 0 + 1) + 0);
+
+  function handleOnClick() {
+    updateFavoritePokemon(name);
+  }
+
   return (
     <PokemonCardStyled>
-      <PokemonFavorite onClick={() => updateFavoritePokemon(name)}>
+      <PokemonFavorite onClick={() => handleOnClick()}>
         {favorite ? (
           <AiFillStar size={32} color="#e7cc56" />
         ) : (
@@ -22,6 +28,7 @@ function PokemonCard({ number, name, favorite, updateFavoritePokemon }) {
         width={110}
         height={110}
         loading="lazy"
+        delay={delay}
       />
       <Typography fontSize={14} fontWeight={300} align="center">
         #{numberFormatted}
@@ -55,11 +62,14 @@ const PokemonFavorite = styled.div`
   cursor: pointer;
 `;
 
-const PokemonImage = styled.img`
+const PokemonImage = styled.img.attrs((props) => ({
+  style: {
+    animationDelay: `${props.delay}ms`,
+  },
+}))`
   margin: 0 auto;
   animation-name: floating;
   animation-duration: 2500ms;
-  animation-delay: ${() => Math.floor(Math.random() * (3000 - 0 + 1) + 0)}ms;
   animation-iteration-count: infinite;
 
   @keyframes floating {
