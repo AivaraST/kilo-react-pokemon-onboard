@@ -13,8 +13,6 @@ import pokemonInitialState from './state';
  */
 // eslint-disable-next-line default-param-last
 const pokemonReducer = (state = pokemonInitialState, action) => {
-  const updatedState = { ...state };
-
   if (action.type === ACTION_SET_POKEMONS) {
     return {
       ...state,
@@ -23,11 +21,21 @@ const pokemonReducer = (state = pokemonInitialState, action) => {
   }
 
   if (action.type === ACTION_TOGGLE_FAVORITE_POKEMON) {
-    updatedState.pokemons[action.payload].favorite =
-      !updatedState.pokemons[action.payload].favorite;
+    // const updatedState = { ...state };
+    // updatedState.pokemons[action.payload].favorite =
+    // !updatedState.pokemons[action.payload].favorite;
+    // return updatedState
+
+    const pokemons = state.pokemons.map((pokemon) => {
+      if (pokemon.id === action.payload) {
+        return { ...pokemon, favorite: !pokemon.favorite };
+      }
+      return pokemon;
+    });
 
     return {
-      ...updatedState,
+      ...state,
+      pokemons,
     };
   }
 

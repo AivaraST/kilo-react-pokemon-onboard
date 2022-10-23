@@ -3,10 +3,9 @@ import Grid from '../layout/Grid';
 import Typography from '../typography/Typography';
 import PokemonCard from './PokemonCard';
 
-function PokemonsList({ pokemons, listName, updateFavoritePokemon }) {
-  // if (pokemons.length < 1) return null;
-
-  console.log('PokemonsList component', listName, 'rendered');
+function PokemonsList({ pokemons, listName, toggleFavoritePokemon }) {
+  if (pokemons.length < 1) return null;
+  console.log('PokemonsList rendered...', listName);
 
   return (
     <>
@@ -15,12 +14,13 @@ function PokemonsList({ pokemons, listName, updateFavoritePokemon }) {
           {listName}
         </Typography>
       )}
+
       <Grid columns={5} gap={16}>
         {pokemons.map((pokemon) => (
           <PokemonCard
-            key={pokemon.number}
-            {...pokemon}
-            updateFavoritePokemon={updateFavoritePokemon}
+            key={pokemon.id}
+            pokemon={pokemon}
+            toggleFavoritePokemon={toggleFavoritePokemon}
           />
         ))}
       </Grid>
@@ -28,9 +28,4 @@ function PokemonsList({ pokemons, listName, updateFavoritePokemon }) {
   );
 }
 
-const PokemonsListMemoized = memo(
-  PokemonsList,
-  (prevProps, nextProps) => prevProps.pokemons === nextProps.pokemons
-);
-
-export default PokemonsListMemoized;
+export default memo(PokemonsList);

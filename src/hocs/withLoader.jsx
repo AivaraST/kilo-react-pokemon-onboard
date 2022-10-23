@@ -11,12 +11,22 @@ function withLoader(Component) {
       );
     }
 
+    if (props.failed) {
+      return (
+        <Loader>
+          <div>Sorry, something went wrong...</div>
+          <div>{props.failed}</div>
+        </Loader>
+      );
+    }
+
     return <Component {...props} />;
   };
 }
 
 const Loader = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 

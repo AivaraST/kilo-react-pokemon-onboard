@@ -4,6 +4,7 @@ import axios from 'axios';
  * Action types:
  * We define them as constants so it's will be consistent through app.
  * Those constants are used when we creating actions and then checking in reducer which actions was dispatched.
+ * Maybe it's better to move them out, but currently seems that action types and action creator functions can sit in one file.
  */
 export const ACTION_SET_POKEMONS = 'ACTION_SET_POKEMONS';
 export const ACTION_TOGGLE_FAVORITE_POKEMON = 'ACTION_TOGGLE_FAVORITE_POKEMON';
@@ -45,12 +46,11 @@ export const fetchPokemons = (amount) => async (dispatch) => {
   dispatch(setPokemonsLoading(true));
 
   axios
-    .get(`https://pokeapi.co/api/v2/pokesmon?limit=${amount}`)
+    .get(`https://pokeapi.co/api/v2/pokemon?limit=${amount}`)
     .then(({ data }) => {
       const pokemons = data.results;
       pokemons.forEach((_, index) => {
-        pokemons[index].index = index;
-        pokemons[index].number = index + 1;
+        pokemons[index].id = index + 1;
         pokemons[index].favorite = false;
       });
 

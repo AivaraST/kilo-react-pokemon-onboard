@@ -1,67 +1,48 @@
-import React, { useMemo, useState } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
 import { CgSearch } from 'react-icons/cg';
+import { connect } from 'react-redux';
 import PokemonsList from '../components/pokemons/PokemonsList';
 import Input from '../components/inputs/Input';
 import Button from '../components/buttons/Button';
 import Container from '../components/layout/Container';
 import Typography from '../components/typography/Typography';
 import Box from '../components/layout/Box';
-import withLoader from '../hocs/withLoader';
+import {
+  mapDispatchToPropsPokemons,
+  mapStateToPropsPokemons,
+} from '../store/pokemon/maps';
+import PokemonListWithLoader from '../components/pokemons/PokemonsListWithLoader';
 
 function filterPokemonsFavorite(pokemons) {
   return pokemons.filter((pokemon) => pokemon.favorite === true);
 }
 
-const PokemonListWithLoader = withLoader(PokemonsList);
+function Pokemons({
+  pokemons,
+  loading,
+  failed,
+  fetchPokemons,
+  toggleFavoritePokemon,
+}) {
+  console.log('Pokemons page rendered...');
 
-function Pokemons() {
-  console.log('Pokemons component rendered');
-  const [amount, setAmount] = useState('');
-  const [error, setError] = useState('');
-  const [pokemons, setPokemons] = useState([]);
-  const pokemonsFavorited = useMemo(
-    () => filterPokemonsFavorite(pokemons),
-    [pokemons]
-  );
-  const [loading, setLoading] = useState(false);
+  const [amount, setAmount] = useState();
+  const [inputError, setInputError] = useState('');
+  const pokemonsFavorite = filterPokemonsFavorite(pokemons);
 
-  function handleOnChange(e) {
+  const handleOnChange = (e) => {
     setAmount(e.currentTarget.valueAsNumber);
-    setError('');
-  }
+    setInputError('');
+  };
 
-  function updateFavoritePokemon(name) {
-    setPokemons((pokemonsOld) =>
-      pokemonsOld.map((pokemon) => {
-        if (pokemon.name === name) {
-          return { ...pokemon, favorite: !pokemon.favorite };
-        }
-        return pokemon;
-      })
-    );
-  }
-
-  async function handleSubmit() {
+  const handleSubmit = () => {
     if (!amount || amount < 1) {
-      setError('Please enter valid number.');
+      setInputError('Please enter valid number.');
       return;
     }
 
-    setLoading(true);
-    const response = await axios.get(
-      `https://pokeapi.co/api/v2/pokemon?limit=${amount}`
-    );
-    const fetchedPokemons = response.data.results;
-
-    fetchedPokemons.forEach((_fetchedPokemon, index) => {
-      fetchedPokemons[index].number = index + 1;
-      fetchedPokemons[index].favorite = false;
-    });
-
-    setPokemons(fetchedPokemons);
-    setLoading(false);
-  }
+    fetchPokemons(amount);
+  };
 
   return (
     <Container>
@@ -77,12 +58,12 @@ function Pokemons() {
             type="number"
             label="How much pokemons you want to see today? 👹"
             placeholder="Enter number"
-            onChange={(e) => handleOnChange(e)}
+            onChange={handleOnChange}
             icon={<CgSearch />}
-            error={error}
+            error={inputError}
             mb={16}
           />
-          <Button onClick={(e) => handleSubmit(e)} disabled={loading}>
+          <Button onClick={handleSubmit} disabled={loading}>
             Fetch
           </Button>
         </Box>
@@ -90,9 +71,9 @@ function Pokemons() {
         <Box mb={48}>
           <PokemonsList
             listName="Your most liked pokemon list!"
-            pokemons={pokemonsFavorited}
+            pokemons={pokemonsFavorite}
             loading={loading}
-            updateFavoritePokemon={(name) => updateFavoritePokemon(name)}
+            toggleFavoritePokemon={toggleFavoritePokemon}
           />
         </Box>
         <Box>
@@ -100,7 +81,8 @@ function Pokemons() {
             listName="Here we go! Choose your favourite pokemons."
             pokemons={pokemons}
             loading={loading}
-            updateFavoritePokemon={(name) => updateFavoritePokemon(name)}
+            failed={failed}
+            toggleFavoritePokemon={toggleFavoritePokemon}
           />
         </Box>
       </Box>
@@ -108,4 +90,11 @@ function Pokemons() {
   );
 }
 
-export default Pokemons;
+/**
+ * From Redux v7.1.0 we can use use useSelector, useDispatch hooks instead of "connecting" it through HOC.
+ * With hooks we will not need those mapStateToProps, mapDispatchToProps maps to define what should be accessible through props.
+ */
+export default connect(
+  mapStateToPropsPokemons,
+  mapDispatchToPropsPokemons
+)(Pokemons);

@@ -1,30 +1,33 @@
 import styled from 'styled-components';
 import { AiOutlineStar, AiFillStar } from 'react-icons/ai';
+import { memo } from 'react';
 import Typography from '../typography/Typography';
 
-function PokemonCard({ number, name, favorite, updateFavoritePokemon }) {
-  const numberFormatted = String(`000${number}`).slice(-3);
+function PokemonCard({ pokemon, toggleFavoritePokemon }) {
+  const numberFormatted = String(`000${pokemon.id}`).slice(-3);
   const delay = Math.floor(Math.random() * (3000 - 0 + 1) + 0);
 
-  function handleOnClick() {
-    updateFavoritePokemon(name);
-  }
+  console.log('PokemonCard rendered...');
+
+  const handleOnClick = () => {
+    toggleFavoritePokemon(pokemon.id);
+  };
 
   return (
     <PokemonCardStyled>
-      <PokemonFavorite onClick={() => handleOnClick()}>
-        {favorite ? (
+      <PokemonFavorite onClick={handleOnClick}>
+        {pokemon.favorite ? (
           <AiFillStar size={32} color="#e7cc56" />
         ) : (
           <AiOutlineStar size={32} />
         )}
       </PokemonFavorite>
       <Typography fontSize={24} fontWeight={700} align="center" capitalize>
-        {name}
+        {pokemon.name}
       </Typography>
       <PokemonImage
-        src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${number}.png`}
-        alt={`Pokemon Card - ${name}`}
+        src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${pokemon.id}.png`}
+        alt="Pokemon Card"
         width={110}
         height={110}
         loading="lazy"
@@ -85,4 +88,4 @@ const PokemonImage = styled.img.attrs((props) => ({
   }
 `;
 
-export default PokemonCard;
+export default memo(PokemonCard);
